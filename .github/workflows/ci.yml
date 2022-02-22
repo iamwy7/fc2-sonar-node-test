@@ -1,18 +1,24 @@
 name: ci-sonarcloud
 on:
-  pull_request:
+  push:
     branches:
       - develop
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  run-ci:
+  testing:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
+      - uses: actions/setup-node@v2
         with:
-          go-version: 1.15
-      - run: go test -coverprofile=coverage.out
+          node-version: '14'
+      # Install Deps
+      - run: npm install
+      # Run tests and gen cov
+      - run: npm run test
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
