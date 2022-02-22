@@ -12,3 +12,4 @@ module.exports = {
         return a / b;
     }
 };
+// Just to activate coverage analysis
